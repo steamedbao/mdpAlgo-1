@@ -45,19 +45,20 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
 
         // receive waypoint
         int wayPointX = mWayPointX, wayPointY = mWayPointY;
-        //if (realRun && wayPointX == -1 && wayPointY == -1) {
-        //    // receive from Android
-        //    System.out.println("Waiting for waypoint");
-        //    //SocketMgr.getInstance().clearInputBuffer();
-        //    String msg = SocketMgr.getInstance().receiveMessage();
-        //    List<Integer> waypoints;
-        //    while ((waypoints = MessageMgr.parseMessage(msg)) == null) {
-        //        msg = SocketMgr.getInstance().receiveMessage();
-        //    }
-        //    // the coordinates in fastest path search is different from real grid coordinate
-        //    wayPointX = waypoints.get(0)-1;
-        //    wayPointY = waypoints.get(1)-1;
-        //} else if (!realRun) {
+        // if (realRun && wayPointX == -1 && wayPointY == -1) {
+        // // receive from Android
+        // System.out.println("Waiting for waypoint");
+        // //SocketMgr.getInstance().clearInputBuffer();
+        // String msg = SocketMgr.getInstance().receiveMessage();
+        // List<Integer> waypoints;
+        // while ((waypoints = MessageMgr.parseMessage(msg)) == null) {
+        // msg = SocketMgr.getInstance().receiveMessage();
+        // }
+        // // the coordinates in fastest path search is different from real grid
+        // coordinate
+        // wayPointX = waypoints.get(0)-1;
+        // wayPointY = waypoints.get(1)-1;
+        // } else if (!realRun) {
         if (!realRun) {
             // ignore waypoint for simulation
             wayPointX = START_X;
@@ -74,16 +75,19 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
             System.out.println("Algorithm finished, executing actions");
             path1.addAll(path2);
             System.out.println(path1.toString());
+            String compressedPath = AlgorithmRunner.compressPath(path1);
+            System.out.println(compressedPath.toString());
             if (realRun) {
                 //// INITIAL CALIBRATION
-                //if (realRun) {
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                //}
+                // if (realRun) {
+                // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                // }
                 // SEND ENTIRE PATH AT ONCE
-                String compressedPath = AlgorithmRunner.compressPath(path1);
+                // String compressedPath = AlgorithmRunner.compressPath(path1);
+                // System.out.println(compressedPath.toString());
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "F");
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
                 // SIMULATE AT THE SAME TIME

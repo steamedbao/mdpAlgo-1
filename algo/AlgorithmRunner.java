@@ -13,22 +13,24 @@ import static constant.EntitiesConstants.*;
  */
 public interface AlgorithmRunner {
     int INFINITY = 1000000;
+
     void run(GridMap grid, Robot robot, boolean realRun);
 
     /**
      * Run the A* algorithm from point (startX, startY) to (endX, endY)
+     * 
      * @param startX Start point x coordinate
      * @param startY Start point y coordinate
-     * @param endX End point x coordinate
-     * @param endY End point y coordinate
-     * @param grid Map
-     * @param robot Robot
+     * @param endX   End point x coordinate
+     * @param endY   End point y coordinate
+     * @param grid   Map
+     * @param robot  Robot
      * @return A list of actions for the robot to take to reach the goal
      */
     static List<String> runAstar(int startX, int startY, int endX, int endY, GridMap grid, Robot robot) {
         // initialization
-        boolean[][] closedSet;                                      //already evaluated
-        List<GridBox> openSet;                                      //to be evaluated
+        boolean[][] closedSet; // already evaluated
+        List<GridBox> openSet; // to be evaluated
         HashMap<GridBox, GridBox> cameFrom;
         int[][] gScore;
         int[][] fScore;
@@ -36,8 +38,8 @@ public interface AlgorithmRunner {
         closedSet = new boolean[MAP_COLS - 2][MAP_ROWS - 2];
         openSet = new ArrayList<>();
         cameFrom = new HashMap<>();
-        gScore = new int[MAP_COLS - 2][MAP_ROWS - 2];               //cost from start
-        fScore = new int[MAP_COLS - 2][MAP_ROWS - 2];               //estimate distance to goal
+        gScore = new int[MAP_COLS - 2][MAP_ROWS - 2]; // cost from start
+        fScore = new int[MAP_COLS - 2][MAP_ROWS - 2]; // estimate distance to goal
         cells = new GridBox[MAP_COLS - 2][MAP_ROWS - 2];
 
         for (int x = 0; x < MAP_COLS - 2; x++)
@@ -71,21 +73,24 @@ public interface AlgorithmRunner {
 
                 int tentativeGScore = gScore[current.getX()][current.getY()] + 1;
                 GridBox previousCell = cameFrom.get(current);
-                if (previousCell != null && previousCell.getX() != neighbor.getX() && previousCell.getY() != neighbor.getY())
+                if (previousCell != null && previousCell.getX() != neighbor.getX()
+                        && previousCell.getY() != neighbor.getY())
                     tentativeGScore += 1; // penalize turns
                 if (tentativeGScore >= gScore[neighbor.getX()][neighbor.getY()])
                     continue;
 
                 cameFrom.put(neighbor, current);
                 gScore[neighbor.getX()][neighbor.getY()] = tentativeGScore;
-                fScore[neighbor.getX()][neighbor.getY()] = tentativeGScore + estimateDistanceToGoal(neighbor.getX(), neighbor.getY(), endX, endY);
+                fScore[neighbor.getX()][neighbor.getY()] = tentativeGScore
+                        + estimateDistanceToGoal(neighbor.getX(), neighbor.getY(), endX, endY);
             }
         }
         return null;
     }
-    
+
     /**
      * Select a cell from the openset with lowest f score.
+     * 
      * @param openSet
      * @param fScore
      * @return
@@ -105,6 +110,7 @@ public interface AlgorithmRunner {
 
     /**
      * Reconstructs the path of an Astar run after reaching the goal
+     * 
      * @param robot
      * @param current
      * @param cameFrom
@@ -125,16 +131,16 @@ public interface AlgorithmRunner {
         int calibrationCounter = 0;
         for (GridBox cell : path) {
 
-            //calibrationCounter++;
-            //if (robot.canCalibrateFront()) {
-            //    actions.add("C");
-            //    calibrationCounter = 0;
-            //} else if (calibrationCounter >= 5 && robot.canCalibrateLeft()) {
-            //    actions.add("L");
-            //    actions.add("C");
-            //    actions.add("R");
-            //    calibrationCounter = 0;
-            //}
+            // calibrationCounter++;
+            // if (robot.canCalibrateFront()) {
+            // actions.add("C");
+            // calibrationCounter = 0;
+            // } else if (calibrationCounter >= 5 && robot.canCalibrateLeft()) {
+            // actions.add("L");
+            // actions.add("C");
+            // actions.add("R");
+            // calibrationCounter = 0;
+            // }
 
             // see if we need to turn
             int nextHeading = 0;
@@ -151,7 +157,7 @@ public interface AlgorithmRunner {
                 if ((robot.getOrientation() + 1) % 4 == nextHeading) {
                     actions.add("R");
                     robot.turn(RIGHT);
-                } else if ((robot.getOrientation() + 3) % 4 == nextHeading){
+                } else if ((robot.getOrientation() + 3) % 4 == nextHeading) {
                     actions.add("L");
                     robot.turn(LEFT);
                 } else {
@@ -168,8 +174,9 @@ public interface AlgorithmRunner {
     }
 
     /**
-     * Generate a list of neighbors available for moving (i.e. it
-     * cannot be out of arena, or an obstacle, or unexplored)
+     * Generate a list of neighbors available for moving (i.e. it cannot be out of
+     * arena, or an obstacle, or unexplored)
+     * 
      * @param grid
      * @param current
      * @param cells
@@ -182,9 +189,8 @@ public interface AlgorithmRunner {
         int trueX = current.getX() + 1, trueY = current.getY() + 1;
         // check north
         for (int i = -1; i <= 1; ++i) {
-            if (grid.isOutOfArena(trueX + i, trueY - 2) ||
-                    grid.getIsObstacle(trueX + i, trueY - 2) ||
-                    !grid.getIsExplored(trueX + i, trueY - 2))
+            if (grid.isOutOfArena(trueX + i, trueY - 2) || grid.getIsObstacle(trueX + i, trueY - 2)
+                    || !grid.getIsExplored(trueX + i, trueY - 2))
                 front = false;
         }
         if (front)
@@ -192,9 +198,8 @@ public interface AlgorithmRunner {
 
         // check south
         for (int i = -1; i <= 1; ++i) {
-            if (grid.isOutOfArena(trueX + i, trueY + 2) ||
-                    grid.getIsObstacle(trueX + i, trueY + 2) ||
-                    !grid.getIsExplored(trueX + i, trueY + 2))
+            if (grid.isOutOfArena(trueX + i, trueY + 2) || grid.getIsObstacle(trueX + i, trueY + 2)
+                    || !grid.getIsExplored(trueX + i, trueY + 2))
                 back = false;
         }
         if (back)
@@ -202,9 +207,8 @@ public interface AlgorithmRunner {
 
         // check west
         for (int i = -1; i <= 1; ++i) {
-            if (grid.isOutOfArena(trueX - 2, trueY + i) ||
-                    grid.getIsObstacle(trueX - 2, trueY + i) ||
-                    !grid.getIsExplored(trueX - 2, trueY + i))
+            if (grid.isOutOfArena(trueX - 2, trueY + i) || grid.getIsObstacle(trueX - 2, trueY + i)
+                    || !grid.getIsExplored(trueX - 2, trueY + i))
                 left = false;
         }
         if (left)
@@ -212,9 +216,8 @@ public interface AlgorithmRunner {
 
         // check east
         for (int i = -1; i <= 1; ++i) {
-            if (grid.isOutOfArena(trueX + 2, trueY + i) ||
-                    grid.getIsObstacle(trueX + 2, trueY + i) ||
-                    !grid.getIsExplored(trueX + 2, trueY + i))
+            if (grid.isOutOfArena(trueX + 2, trueY + i) || grid.getIsObstacle(trueX + 2, trueY + i)
+                    || !grid.getIsExplored(trueX + 2, trueY + i))
                 right = false;
         }
         if (right)
@@ -224,11 +227,11 @@ public interface AlgorithmRunner {
     }
 
     /**
-     * Calculates the estimated distance from (curX, curY) to (goalX, goalY).
-     * The estimation is based on the Manhattan distance. If a turn is unavoidable,
-     * a penalty of 1 is added to the distance.
+     * Calculates the estimated distance from (curX, curY) to (goalX, goalY). The
+     * estimation is based on the Manhattan distance. If a turn is unavoidable, a
+     * penalty of 1 is added to the distance.
      */
-     static int estimateDistanceToGoal(int curX, int curY, int goalX, int goalY) {
+    static int estimateDistanceToGoal(int curX, int curY, int goalX, int goalY) {
         int distance = Math.abs(goalX - curX) + Math.abs(goalY - curY);
         if (curX != goalX && curY != goalY) // we must turn at least once
             distance += 1;
@@ -237,9 +240,10 @@ public interface AlgorithmRunner {
     }
 
     /**
-     * Convert the list of actions into a single string for sending
-     * to Arduino. Specifically, consecutive moves are compressed to the
-     * format "M5" to represent moving 5 cells at once.
+     * Convert the list of actions into a single string for sending to Arduino.
+     * Specifically, consecutive moves are compressed to the format "M5" to
+     * represent moving 5 cells at once.
+     * 
      * @param actions Actions to perform
      * @return A string representing the actions
      */
@@ -250,7 +254,7 @@ public interface AlgorithmRunner {
         for (String action : actions) {
             if (action.equals("L") || action.equals("R") || action.equals("U") || action.equals("C")) {
                 if (moveCounter != 0) {
-                    //builder.append("M");
+                    builder.append("M");
                     builder.append(moveCounter);
                     moveCounter = 0;
                 }
@@ -260,7 +264,7 @@ public interface AlgorithmRunner {
             }
         }
         if (moveCounter != 0) {
-            //builder.append("M");
+            builder.append("M");
             builder.append(moveCounter);
         }
 

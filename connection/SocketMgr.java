@@ -1,7 +1,5 @@
 package connection;
 
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,19 +9,19 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 /**
- * A singleton class for using the socket
- * Set up of client
+ * A singleton class for using the socket Set up of client
  */
 public class SocketMgr {
 
     private static SocketMgr mInstance;
     private Socket mSocket;
-    private PrintWriter mSocketWriter;						//Write to output stream
-    private BufferedReader mSocketReader;					//read from input steam
-    private static final int PORT = 1273;					//network utility in mac --> computer"C" and rpi"S" must use same kind
-    private static final String ADDRESS = "192.168.12.12"; 	//tune to school network
- 
-    public SocketMgr() { }
+    private PrintWriter mSocketWriter; // Write to output stream
+    private BufferedReader mSocketReader; // read from input steam
+    private static final int PORT = 2121; // network utility in mac --> computer"C" and rpi"S" must use same kind
+    private static final String ADDRESS = "192.168.21.1"; // tune to school network
+
+    public SocketMgr() {
+    }
 
     public static SocketMgr getInstance() {
         if (mInstance == null)
@@ -34,7 +32,7 @@ public class SocketMgr {
     public void openConnection() {
         try {
             mSocket = new Socket(ADDRESS, PORT);
-            //mSocket.setTcpNoDelay(true);
+            // mSocket.setTcpNoDelay(true);
             mSocketWriter = new PrintWriter(mSocket.getOutputStream(), true);
             mSocketReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
             System.out.println("Socket connection successful");
@@ -97,5 +95,3 @@ public class SocketMgr {
         }
     }
 }
-
-
