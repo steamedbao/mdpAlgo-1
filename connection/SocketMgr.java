@@ -17,7 +17,7 @@ public class SocketMgr {
     private Socket mSocket;
     private PrintWriter mSocketWriter; // Write to output stream
     private BufferedReader mSocketReader; // read from input steam
-    private static final int PORT = 2121; // network utility in mac --> computer"C" and rpi"S" must use same kind
+    private static final int PORT = 1212; // network utility in mac --> computer"C" and rpi"S" must use same kind
     private static final String ADDRESS = "192.168.21.1"; // tune to school network
 
     public SocketMgr() {

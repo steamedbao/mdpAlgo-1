@@ -88,7 +88,7 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
                 // SEND ENTIRE PATH AT ONCE
                 // String compressedPath = AlgorithmRunner.compressPath(path1);
                 // System.out.println(compressedPath.toString());
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "F");
+                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "AR,");
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
                 // SIMULATE AT THE SAME TIME
                 for (String action : path1) {

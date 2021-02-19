@@ -4,6 +4,12 @@ import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable.BinaryOp.And;
 
 import static constant.EntitiesConstants.*;
 
@@ -194,8 +200,8 @@ public class GridMap {
         for (int i = 0; i < part1.length() / 4; i++) {
             builder.append(Integer.toHexString(Integer.parseInt(part1.substring(i * 4, (i + 1) * 4), 2)));
         }
-        // System.out.println("Map descriptor part 1:");
-        // System.out.println(builder.toString());
+        System.out.println("Map descriptor part 1:");
+        System.out.println(builder.toString());
 
         return builder.toString();
     }
@@ -224,6 +230,52 @@ public class GridMap {
         }
         System.out.println("Map descriptor part 2:");
         System.out.println(builder.toString());
+
+        String testStr = "01000000000000F00000000000400007E0000000000000001F80000780000000000004000800";
+
+        BigInteger testInt = new BigInteger(testStr, 16);
+        String testBin = testInt.toString(2);
+
+        int len = testStr.length() * 4;
+
+        // left pad the string result with 0s if converting to BigInteger removes them.
+        if (testBin.length() < len) {
+            int diff = len - testBin.length();
+            String pad = "";
+            for (int i = 0; i < diff; ++i) {
+                pad = pad.concat("0");
+            }
+            testBin = pad.concat(testBin);
+        }
+
+        System.out.println("testbin " + testBin);
+
+        ArrayList<String> stringList = new ArrayList<String>();
+        int count = 0;
+        String tentativeStr = "";
+
+        for (int i = 0; i < testBin.length(); i++) {
+            if (count % 15 != 0 | count == 0) {
+                tentativeStr = tentativeStr + testBin.charAt(i);
+                count++;
+            } else {
+                stringList.add(tentativeStr + '\n');
+                tentativeStr = "" + testBin.charAt(i);
+                count = 1;
+            }
+        }
+
+        System.out.println(stringList);
+        System.out.println(stringList.size());
+
+        ArrayList<String> stringList2 = new ArrayList<String>();
+        for (int i = stringList.size() - 1; i >= 0; i--) {
+            stringList2.add(stringList.get(i));
+        }
+        System.out.println(stringList2);
+        String endStr = stringList2.toString();
+        endStr = endStr.replace(", ", "").replace("[", "").replace("]", "");
+        System.out.println(endStr);
 
         return builder.toString();
     }
