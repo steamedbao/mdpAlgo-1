@@ -2,7 +2,9 @@ package entities;
 
 import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -276,7 +278,33 @@ public class GridMap {
         String endStr = stringList2.toString();
         endStr = endStr.replace(", ", "").replace("[", "").replace("]", "");
         System.out.println(endStr);
+        BufferedWriter out = null;
+		try {
+			out = new BufferedWriter(new FileWriter("test1.txt"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
+     
+      try {
+
+          out.write(endStr);  
+      }
+      catch (IOException e)
+      {
+          System.out.println("Exception ");
+
+      }
+      finally
+      {
+          try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      }
         return builder.toString();
     }
 

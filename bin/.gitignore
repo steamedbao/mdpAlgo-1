@@ -6,3 +6,16 @@ src/algo/.DS_Store
 .idea/modules.xml
 .idea/misc.xml
 .DS_Store
+*.class
+*.txt
+/.classpath
+/.gitignore
+/.idea/
+/.project
+/algo/
+/connection/
+/constant/
+/entities/
+/maps/
+/out/
+/simInterface/
