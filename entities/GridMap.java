@@ -277,34 +277,41 @@ public class GridMap {
         System.out.println(stringList2);
         String endStr = stringList2.toString();
         endStr = endStr.replace(", ", "").replace("[", "").replace("]", "");
-        System.out.println(endStr);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < endStr.length(); i++) {
+            int j = 0;
+            if (i < endStr.length() && i > 0) {
+                j = i - 1;
+            }
+            if (i > 0 && endStr.charAt(j) != '\n') {
+                result.append(" ");
+            }
+            result.append(endStr.charAt(i));
+        }
+
+        System.out.println(result);
         BufferedWriter out = null;
-		try {
-			out = new BufferedWriter(new FileWriter("test1.txt"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        try {
+            out = new BufferedWriter(new FileWriter("test1.txt"));
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
 
-     
-      try {
+        try {
 
-          out.write(endStr);  
-      }
-      catch (IOException e)
-      {
-          System.out.println("Exception ");
+            out.write(result.toString());
+        } catch (IOException e) {
+            System.out.println("Exception ");
 
-      }
-      finally
-      {
-          try {
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-      }
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         return builder.toString();
     }
 

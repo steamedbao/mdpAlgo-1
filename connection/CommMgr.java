@@ -5,27 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Message creation for android
-public class CommMgr extends EntitiesConstants{
+public class CommMgr extends EntitiesConstants {
 
     public static String generateFinalDescriptor(String part1, String part2) {
         return "{finaldescriptor:\"" + part1 + "," + part2 + "\"}";
     }
 
     /**
-     * Generate map string for Android communication, note that on Android the coordinate of
-     * the robot is the upper right corner.
+     * Generate map string for Android communication, note that on Android the
+     * coordinate of the robot is the upper right corner.
+     * 
      * @param descriptor Map descriptor in Android format
-     * @param x Robot's x coordinates
-     * @param y Robot's y coordinates
-     * @param heading Robot's heading
+     * @param x          Robot's x coordinates
+     * @param y          Robot's y coordinates
+     * @param heading    Robot's heading
      * @return Message string for sending to Android
      */
-    public static String generateMapDescriptorMsg(String descriptor1,String descriptor2, int x, int y, int heading) {
+    public static String generateMapDescriptorMsg(String descriptor1, String descriptor2, int x, int y, int heading) {
         StringBuilder builder = new StringBuilder();
-        //y,x,orientation
+        // y,x,orientation
         builder.append("MDF");
         builder.append("|");
-        builder.append(MAP_ROWS - y-1);
+        builder.append(MAP_ROWS - y - 1);
         builder.append("|");
         builder.append(x);
         builder.append("|");
@@ -47,8 +48,9 @@ public class CommMgr extends EntitiesConstants{
     }
 
     /**
-     * Parse waypoint message from Android, the Y coordinate received
-     * starts from the bottom, so it's reversed.
+     * Parse waypoint message from Android, the Y coordinate received starts from
+     * the bottom, so it's reversed.
+     * 
      * @param msg
      * @return
      */
@@ -62,6 +64,7 @@ public class CommMgr extends EntitiesConstants{
             wayPointY = MAP_ROWS - Integer.parseInt(splitString[1]) - 1;
             waypoint.add(wayPointX);
             waypoint.add(wayPointY);
+            System.out.println(waypoint);
             return waypoint;
         } catch (Exception e) {
             e.printStackTrace();

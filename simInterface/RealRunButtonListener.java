@@ -1,6 +1,5 @@
 package simInterface;
 
-
 import algo.*;
 import entities.GridMap;
 import entities.Robot;
@@ -13,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,6 +22,7 @@ public class RealRunButtonListener implements ActionListener {
 
     private Simulator mView;
     private GridMap mGrid;
+    private GridMap givenGrid;
     private Robot mRobot;
 
     public RealRunButtonListener(Simulator view, Robot robot, GridMap grid) {
@@ -36,7 +37,8 @@ public class RealRunButtonListener implements ActionListener {
         System.out.println("Physical run button pressed, real run: " + mView.getIsRealRun());
         if (mView.getIsRealRun()) {
             if (mView.getRobotSpeed() == 0) {
-                JOptionPane.showMessageDialog(null, "Please set robot speed (X Steps per second)!", "Fastest path", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please set robot speed (X Steps per second)!", "Fastest path",
+                        JOptionPane.ERROR_MESSAGE);
             }
             mView.disableButtons();
             new PhysicalRunWorker().execute();
@@ -50,26 +52,27 @@ public class RealRunButtonListener implements ActionListener {
             // receive way point
 
             String msg = SocketMgr.getInstance().receiveMessage(false);
-//            if (SocketMgr.getInstance().receiveMessage())
+            // if (SocketMgr.getInstance().receiveMessage())
 
             List<Integer> waypoints = null;
-            while (waypoints == null && (waypoints = CommMgr.parseMessage(msg))==null) {
+            while (waypoints == null && (waypoints = CommMgr.parseMessage(msg)) == null) {
                 msg = SocketMgr.getInstance().receiveMessage(false);
             }
 
-            //Clear sensorReading
-            FileWriter f = new FileWriter("sensorReading.txt",false);
+            // Clear sensorReading
+            FileWriter f = new FileWriter("sensorReading.txt", false);
             f.write("");
             f.close();
 
             // do exploration
+            System.out.println("here1");
             AlgorithmRunner explorationRunner = new ExplorationAlgorithmRunner(mView.getRobotSpeed());
             explorationRunner.run(mGrid, mRobot, mView.getIsRealRun());
 
-            // do fastest path
             AlgorithmRunner fastestPathRunner = new FastestPathAlgorithmRunner(mView.getRobotSpeed(),
                     waypoints.get(0) - 1, waypoints.get(1) - 1);
-//            0, 17);
+            // 0, 17);
+
             fastestPathRunner.run(mGrid, mRobot, mView.getIsRealRun());
 
             return 1;
@@ -82,4 +85,3 @@ public class RealRunButtonListener implements ActionListener {
         }
     }
 }
-

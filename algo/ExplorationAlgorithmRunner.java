@@ -33,16 +33,22 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             String msg = SocketMgr.getInstance().receiveMessage(false);
             while (!msg.equals("startexp")) {
                 msg = SocketMgr.getInstance().receiveMessage(false);
-                // SocketMgr.getInstance().sendMessage("A","M");
+                // SocketMgr.getInstance().sendMessage("A", "M");
             }
-
+            System.out.println("herehere");
         }
+        System.out.println("herehere1");
         // SELECT EITHER ONE OF THE METHODS TO RUN ALGORITHMS.
+        System.out.println(grid);
+        System.out.println(robot);
+        System.out.println(realRun);
+
         runExplorationAlgorithmThorough(grid, robot, realRun);
         // runExplorationLeftWall(grid, robot, realRun);
-
+        System.out.println("herehere2");
         // CALIBRATION AFTER EXPLORATION
         calibrateAndTurn(robot, realRun);
+        System.out.println("herehere3");
 
         // GENERATE MAP DESCRIPTOR, SEND TO ANDROID
         String part1 = grid.generateDescriptorPartOne();

@@ -3,6 +3,7 @@ package algo;
 import entities.*;
 import connection.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import static constant.EntitiesConstants.*;
@@ -41,6 +42,7 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
             while (!msg.equals("startfp")) {
                 msg = SocketMgr.getInstance().receiveMessage(false);
             }
+            System.out.println("Starting0");
         }
 
         // receive waypoint
@@ -68,6 +70,7 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
         // run from start to waypoint and from waypoint to goal
         System.out.println("Fastest path algorithm started with waypoint " + wayPointX + "," + wayPointY);
         Robot fakeRobot = new Robot(new GridMap(), new ArrayList<>());
+
         List<String> path1 = AlgorithmRunner.runAstar(START_X, START_Y, wayPointX, wayPointY, grid, fakeRobot);
         List<String> path2 = AlgorithmRunner.runAstar(wayPointX, wayPointY, GOAL_X, GOAL_Y, grid, fakeRobot);
 
