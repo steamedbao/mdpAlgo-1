@@ -8,7 +8,7 @@ import java.util.List;
 public class CommMgr extends EntitiesConstants {
 
     public static String generateFinalDescriptor(String part1, String part2) {
-        return "{finaldescriptor:\"" + part1 + "," + part2 + "\"}";
+        return "MDFshort|" + part1 + "|" + part2;
     }
 
     /**
@@ -24,7 +24,7 @@ public class CommMgr extends EntitiesConstants {
     public static String generateMapDescriptorMsg(String descriptor1, String descriptor2, int x, int y, int heading) {
         StringBuilder builder = new StringBuilder();
         // y,x,orientation
-        builder.append("MDF");
+        builder.append("MDFlong");
         builder.append("|");
         builder.append(MAP_ROWS - y - 1);
         builder.append("|");
@@ -61,7 +61,7 @@ public class CommMgr extends EntitiesConstants {
         Integer wayPointX, wayPointY;
         try {
             wayPointX = Integer.parseInt(splitString[0]);
-            wayPointY = MAP_ROWS - Integer.parseInt(splitString[1]) - 1;
+            wayPointY = MAP_ROWS - Integer.parseInt(splitString[1]);
             waypoint.add(wayPointX);
             waypoint.add(wayPointY);
             System.out.println(waypoint);

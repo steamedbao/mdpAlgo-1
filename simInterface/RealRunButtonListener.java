@@ -40,7 +40,7 @@ public class RealRunButtonListener implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Please set robot speed (X Steps per second)!", "Fastest path",
                         JOptionPane.ERROR_MESSAGE);
             }
-            mView.disableButtons();
+            // mView.disableButtons();
             new PhysicalRunWorker().execute();
         }
     }
@@ -69,11 +69,15 @@ public class RealRunButtonListener implements ActionListener {
             AlgorithmRunner explorationRunner = new ExplorationAlgorithmRunner(mView.getRobotSpeed());
             explorationRunner.run(mGrid, mRobot, mView.getIsRealRun());
 
-            AlgorithmRunner fastestPathRunner = new FastestPathAlgorithmRunner(mView.getRobotSpeed(),
-                    waypoints.get(0) - 1, waypoints.get(1) - 1);
-            // 0, 17);
+            String msg1 = SocketMgr.getInstance().receiveMessage(false);
+            if (msg1.equals("startfp")) {
+                System.out.println("Starting0");
+                AlgorithmRunner fastestPathRunner = new FastestPathAlgorithmRunner(mView.getRobotSpeed(),
+                        waypoints.get(0) - 1, waypoints.get(1) - 1);
+                // 0, 17);
 
-            fastestPathRunner.run(mGrid, mRobot, mView.getIsRealRun());
+                fastestPathRunner.run(mGrid, mRobot, mView.getIsRealRun());
+            }
 
             return 1;
         }

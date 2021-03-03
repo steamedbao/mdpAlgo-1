@@ -36,17 +36,10 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
     public void run(GridMap grid, Robot robot, boolean realRun) {
         robot.reset();
 
-        // wait for start up message
-        if (realRun) {
-            String msg = SocketMgr.getInstance().receiveMessage(false);
-            while (!msg.equals("startfp")) {
-                msg = SocketMgr.getInstance().receiveMessage(false);
-            }
-            System.out.println("Starting0");
-        }
-
         // receive waypoint
-        int wayPointX = mWayPointX, wayPointY = mWayPointY;
+        int wayPointX = mWayPointX - 1, wayPointY = mWayPointY;
+        System.out.println(wayPointX + wayPointY);
+
         // if (realRun && wayPointX == -1 && wayPointY == -1) {
         // // receive from Android
         // System.out.println("Waiting for waypoint");
@@ -91,7 +84,8 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
                 // SEND ENTIRE PATH AT ONCE
                 // String compressedPath = AlgorithmRunner.compressPath(path1);
                 // System.out.println(compressedPath.toString());
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "AR,");
+
+                // AR,PC,fastestpath
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
                 // SIMULATE AT THE SAME TIME
                 for (String action : path1) {

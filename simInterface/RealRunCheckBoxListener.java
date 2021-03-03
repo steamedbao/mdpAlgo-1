@@ -21,9 +21,9 @@ public class RealRunCheckBoxListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mView.getIsRealRun()) {
-            mView.disableLoadMapButton();
-            mView.disableExplorationButton();
-            mView.disableFastestPathButton();
+            // mView.disableLoadMapButton();
+            // mView.disableExplorationButton();
+            // mView.disableFastestPathButton();
             mView.enableRealRunButton();
             if (!SocketMgr.getInstance().isConnected())
                 SocketMgr.getInstance().openConnection();
@@ -37,4 +37,3 @@ public class RealRunCheckBoxListener implements ActionListener {
         }
     }
 }
-

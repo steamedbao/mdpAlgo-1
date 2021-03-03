@@ -24,8 +24,8 @@ public class EntitiesConstants {
     public static final int MIDDLE = 6;
 
     // CommsConstant
-    public static final String TARGET_ARDUINO = "AN,AR";
-    public static final String TARGET_ANDROID = "AR,AN";
-    public static final String TARGET_RPI = "P";
+    public static final String TARGET_ARDUINO = "AR,PC,";
+    public static final String TARGET_ANDROID = "AN,PC,";
+    public static final String TARGET_RPI = "P,";
     public static final String TARGET_BOTH = "Z";
 }
