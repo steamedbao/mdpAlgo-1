@@ -65,6 +65,7 @@ public interface AlgorithmRunner {
 
             openSet.remove(current);
             closedSet[current.getX()][current.getY()] = true;
+            System.out.println("x y is " + current.getX() + current.getY());
 
             for (GridBox neighbor : generateNeighbor(grid, current, cells)) {
                 if (closedSet[neighbor.getX()][neighbor.getY()])
@@ -302,4 +303,5 @@ public interface AlgorithmRunner {
 
         return compressPath(actionWithCalibration);
     }
+
 }

@@ -135,7 +135,10 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             || findPathAndMove(grid, robot, x + 1, y, realRun)
                             || findPathAndMove(grid, robot, x - 1, y, realRun)
                             || findPathAndMove(grid, robot, x, y + 1, realRun)
-                            || findPathAndMove(grid, robot, x, y - 1, realRun))) {
+                            || findPathAndMove(grid, robot, x, y - 1, realRun)
+                            || findPathAndMove(grid, robot, x - 2, y - 4, realRun)
+                            || findPathAndMove(grid, robot, x - 1, y - 3, realRun)
+                            || findPathAndMove(grid, robot, x - 1, y - 2, realRun))) {
                         robot.sense(realRun);
                         moveAndSense(grid, robot, realRun);
                     }

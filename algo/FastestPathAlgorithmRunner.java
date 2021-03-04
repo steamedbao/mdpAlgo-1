@@ -63,16 +63,18 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
         // run from start to waypoint and from waypoint to goal
         System.out.println("Fastest path algorithm started with waypoint " + wayPointX + "," + wayPointY);
         Robot fakeRobot = new Robot(new GridMap(), new ArrayList<>());
+        // y need to plus 1 need trial and error if unlucky
 
         List<String> path1 = AlgorithmRunner.runAstar(START_X, START_Y, wayPointX, wayPointY, grid, fakeRobot);
         List<String> path2 = AlgorithmRunner.runAstar(wayPointX, wayPointY, GOAL_X, GOAL_Y, grid, fakeRobot);
 
         if (path1 != null && path2 != null) {
-            System.out.println("Algorithm finished, executing actions");
             path1.addAll(path2);
-            System.out.println(path1.toString());
             String compressedPath = AlgorithmRunner.compressPath(path1);
+            System.out.println("Algorithm finished, executing actions");
+            System.out.println(path1.toString());
             System.out.println(compressedPath.toString());
+
             if (realRun) {
                 //// INITIAL CALIBRATION
                 // if (realRun) {
