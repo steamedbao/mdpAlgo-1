@@ -131,7 +131,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             for (int y = MAP_ROWS - 1; y >= 0; y--) {
                 for (int x = 0; x <= MAP_COLS - 1; x++) {
                     // CHECK FOR UNEXPLORED CELLS && CHECK IF NEIGHBOURS ARE REACHABLE OR NOT
-                    if (!grid.getIsExplored(x, y) && (findPathAndMove(grid, robot, x + 1, y, realRun)
+                    if (!grid.getIsExplored(x, y) && (findPathAndMove(grid, robot, x, y, realRun)
+                            || findPathAndMove(grid, robot, x + 1, y, realRun)
                             || findPathAndMove(grid, robot, x - 1, y, realRun)
                             || findPathAndMove(grid, robot, x, y + 1, realRun)
                             || findPathAndMove(grid, robot, x, y - 1, realRun))) {
@@ -140,6 +141,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                     }
                     while (exploreChecker.getIsExplored(robot.getPosX(), robot.getPosY()) != grid
                             .getIsExplored(robot.getPosX(), robot.getPosY())) {
+                        robot.sense(realRun);
                         moveAndSense(grid, robot, realRun);
                     }
                     if (grid.checkExploredPercentage() == 100) { // IF FULLEST EXPLORED, EXIT AND GO TO START
@@ -386,7 +388,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
     private void senseAndUpdateAndroid(Robot robot, GridMap grid, boolean realRun) {
         robot.sense(realRun);
-        if (realRun) { // change
+        if (!realRun) { // change
             SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
                     CommMgr.generateMapDescriptorMsg(grid.generateDescriptorPartOne(), grid.generateDescriptorPartTwo(),
                             robot.getCenterPosX(), robot.getCenterPosY(), robot.getOrientation()));

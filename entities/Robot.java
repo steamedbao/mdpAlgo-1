@@ -12,24 +12,21 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-
-
 //problem lacks the observed and observable class
 
 public class Robot {
-	
-	private int posX = START_POS_X;		// top left gridbox
-	private int posY = START_POS_Y;
-	private int orientation = NORTH;	//North = 1, East = 2, South = 3, West =4
-	private GridMap map;
-	private List<Sensor> allSensors;
-	private PropertyChangeSupport support;
-    File file=new File("sensorReading.txt");    //creates a new file instance
-    FileReader fr= null;   //reads the file
-    BufferedReader br= null;
-	
-	
-	public Robot(GridMap grid, List<Sensor> sensors) {
+
+    private int posX = START_POS_X; // top left gridbox
+    private int posY = START_POS_Y;
+    private int orientation = NORTH; // North = 1, East = 2, South = 3, West =4
+    private GridMap map;
+    private List<Sensor> allSensors;
+    private PropertyChangeSupport support;
+    File file = new File("sensorReading.txt"); // creates a new file instance
+    FileReader fr = null; // reads the file
+    BufferedReader br = null;
+
+    public Robot(GridMap grid, List<Sensor> sensors) {
         map = grid;
         allSensors = sensors;
         for (Sensor sensor : sensors) {
@@ -37,13 +34,10 @@ public class Robot {
         }
         support = new PropertyChangeSupport(this);
     }
-	
 
     public boolean isInRobot(int x, int y) {
-        return x < getPosX()+2 && x >= getPosX()
-                && y < getPosY()+2 && y >= getPosY();
+        return x < getPosX() + 2 && x >= getPosX() && y < getPosY() + 2 && y >= getPosY();
     }
-    
 
     public int getPosX() {
         return posX;
@@ -54,7 +48,7 @@ public class Robot {
     }
 
     public void setPosX(int x) {
-       posX = x;
+        posX = x;
     }
 
     public void setPosY(int y) {
@@ -75,11 +69,13 @@ public class Robot {
 
     /**
      * Test if the robot can calibrate on the left
+     * 
      * @return
      */
     public boolean canCalibrateLeft() {
         for (int i = 0; i < ROBOT_SIZE; i++) {
-            if (i == 1) continue;
+            if (i == 1)
+                continue;
             if (orientation == NORTH) {
                 // DIRECTLY BESIDE OF ROBOT
                 if (!map.getIsObstacle(posX - 1, posY + i)) {
@@ -107,11 +103,13 @@ public class Robot {
 
     /**
      * Test if the robot can calibrate in front
+     * 
      * @return
      */
     public boolean canCalibrateFront() {
         for (int i = 0; i < ROBOT_SIZE; i++) {
-            if (i == 1) continue;
+            if (i == 1)
+                continue;
             if (orientation == NORTH) {
                 // DIRECTLY IN FRONT OF ROBOT
                 if (!map.getIsObstacle(posX + i, posY - 1)) {
@@ -138,17 +136,16 @@ public class Robot {
     }
 
     public void setOrientation(int direction) {
-    	orientation = direction;
+        orientation = direction;
     }
-    
+
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
- 
+
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);
     }
-    
 
     public boolean isObstacleAhead() {
         for (int i = 0; i < ROBOT_SIZE; i++) {
@@ -281,15 +278,12 @@ public class Robot {
         return false;
     }
 
+    // discuss degree of movement: turn left, turn right etc.
+    public void move() {
+        int oldX = posX;
+        int oldY = posY;
 
-
-
-    //discuss degree of movement: turn left, turn right etc.
-	public void move() {
-		int oldX = posX ;
-		int oldY = posY ;
-		
-		if (orientation == NORTH) { // Limit position to prevent wall crash
+        if (orientation == NORTH) { // Limit position to prevent wall crash
             posY--;
             for (int i = 0; i < 3; ++i) {
                 map.setIsObstacle(posX + i, posY, false);
@@ -314,53 +308,51 @@ public class Robot {
                 map.setExplored(posX + 2, posY + i, true);
             }
         }
-		
-		support.firePropertyChange("posX",oldX,posX);
-		support.firePropertyChange("posY",oldY,posY);
 
-		
-		
-		
-	}
-	
-	public void turn(int direction) {
+        support.firePropertyChange("posX", oldX, posX);
+        support.firePropertyChange("posY", oldY, posY);
 
-		int oldOrientation = orientation ;
-		
-		if(direction == LEFT) 
-			orientation = (orientation +3) % 4;		
-		
-		else if (direction == RIGHT)
-			orientation = (orientation+1) % 4 ;
-		
-		support.firePropertyChange("orientation",oldOrientation,orientation);
+    }
 
-	}
-	
-	 public void reset() {
-	     int oldposX = this.posX;
-	     int oldposY = this.posY;
-	     posX =START_POS_X;
-	     posY=START_POS_Y;
-         orientation = NORTH;
-		 support.firePropertyChange("posX", oldposX, START_POS_X);
-		 support.firePropertyChange("posY", oldposY, START_POS_Y);
-		 support.firePropertyChange("orientation", this.orientation, NORTH);
-	 }
+    public void turn(int direction) {
 
-	
-	 /**
-     * Updates the simulator's map according to sensor reading. If the sensor reading
-     * is smaller or equal to its range, it means there is an obstacle at that distance.
-     * If the sensor reading is greater than its range, it means there is no obstacle
-     * within its detectable range.
+        int oldOrientation = orientation;
+
+        if (direction == LEFT)
+            orientation = (orientation + 3) % 4;
+
+        else if (direction == RIGHT)
+            orientation = (orientation + 1) % 4;
+
+        support.firePropertyChange("orientation", oldOrientation, orientation);
+
+    }
+
+    public void reset() {
+        int oldposX = this.posX;
+        int oldposY = this.posY;
+        posX = START_POS_X;
+        posY = START_POS_Y;
+        orientation = NORTH;
+        support.firePropertyChange("posX", oldposX, START_POS_X);
+        support.firePropertyChange("posY", oldposY, START_POS_Y);
+        support.firePropertyChange("orientation", this.orientation, NORTH);
+    }
+
+    /**
+     * Updates the simulator's map according to sensor reading. If the sensor
+     * reading is smaller or equal to its range, it means there is an obstacle at
+     * that distance. If the sensor reading is greater than its range, it means
+     * there is no obstacle within its detectable range.
+     * 
      * @param returnedDistance
      * @param heading
      * @param range
      * @param x
      * @param y
      */
-    private void updateMap(int returnedDistance, int heading, int range, int x, int y, boolean realRun, int reliability) {
+    private void updateMap(int returnedDistance, int heading, int range, int x, int y, boolean realRun,
+            int reliability) {
         int xToUpdate = x, yToUpdate = y;
         int distance = Math.min(returnedDistance, range);
         boolean obstacleAhead = returnedDistance <= range;
@@ -392,20 +384,19 @@ public class Robot {
             }
         }
     }
-	
 
     public void sense(boolean realRun) {
-        if (realRun) {
-            //SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
+        if (realRun) { // change
+            // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
             String sensorData = SocketMgr.getInstance().receiveMessage(true);
-            //while sensor never reply, send message again
+            // while sensor never reply, send message again
             while (sensorData == null) {
-                //SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
+                // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
                 sensorData = SocketMgr.getInstance().receiveMessage(true);
             }
             try {
-                FileWriter f = new FileWriter("sensorReading.txt",true);
-                f.write(sensorData+"\n");
+                FileWriter f = new FileWriter("sensorReading.txt", true);
+                f.write(sensorData + "\n");
                 f.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -418,23 +409,22 @@ public class Robot {
                 int range = allSensors.get(i).getRange();
                 int x = allSensors.get(i).getActualPosX();
                 int y = allSensors.get(i).getActualPosY();
-                if (i==5 && returnedDistance == 8){
+                if (i == 5 && returnedDistance == 8) {
                     updateMap(-1, heading, range, x, y, true, allSensors.get(i).getReliability());
-                } else if (i==5 && returnedDistance == 5){
-                    updateMap(-1, heading, range, x, y, true, allSensors.get(i).getReliability()/2);
-                }
-                else
-                updateMap(returnedDistance, heading, range, x, y, true, allSensors.get(i).getReliability());
+                } else if (i == 5 && returnedDistance == 5) {
+                    updateMap(-1, heading, range, x, y, true, allSensors.get(i).getReliability() / 2);
+                } else
+                    updateMap(returnedDistance, heading, range, x, y, true, allSensors.get(i).getReliability());
             }
         } else {
-            if (ReplayButtonListener.isReplay){
+            if (ReplayButtonListener.isReplay) {
                 try {
-                    if(fr == null){
+                    if (fr == null) {
                         fr = new FileReader(file);
-                        br=new BufferedReader(fr);  //creates a buffering character input stream
+                        br = new BufferedReader(fr); // creates a buffering character input stream
                     }
                     String line = null;
-                    if ((line = br.readLine())!= null){
+                    if ((line = br.readLine()) != null) {
                         String[] sensorReadings = line.split(",", allSensors.size());
                         for (int i = 0; i < allSensors.size(); i++) {
                             int returnedDistance = Integer.parseInt(sensorReadings[i]);
@@ -442,10 +432,11 @@ public class Robot {
                             int range = allSensors.get(i).getRange();
                             int x = allSensors.get(i).getActualPosX();
                             int y = allSensors.get(i).getActualPosY();
-                            if (i==5 && returnedDistance == 8){
+                            if (i == 5 && returnedDistance == 8) {
                                 updateMap(-1, heading, range, x, y, true, allSensors.get(i).getReliability());
-                            }else
-                                updateMap(returnedDistance, heading, range, x, y, true, allSensors.get(i).getReliability());
+                            } else
+                                updateMap(returnedDistance, heading, range, x, y, true,
+                                        allSensors.get(i).getReliability());
                         }
                     }
                 } catch (FileNotFoundException e) {
@@ -453,8 +444,7 @@ public class Robot {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 for (Sensor sensor : allSensors) {
                     int returnedDistance = sensor.sense(map);
                     int heading = sensor.getActualOrientation();

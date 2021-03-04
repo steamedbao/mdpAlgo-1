@@ -129,7 +129,10 @@ public class ImageExpAlgorithmRunner implements AlgorithmRunner {
                             || findPathAndMove(grid, robot, x + 1, y, realRun)
                             || findPathAndMove(grid, robot, x - 1, y, realRun)
                             || findPathAndMove(grid, robot, x, y + 1, realRun)
-                            || findPathAndMove(grid, robot, x, y - 1, realRun))) {
+                            || findPathAndMove(grid, robot, x, y - 1, realRun)
+                            || findPathAndMove(grid, robot, x - 2, y - 4, realRun)
+                            || findPathAndMove(grid, robot, x - 1, y - 3, realRun)
+                            || findPathAndMove(grid, robot, x - 1, y - 2, realRun))) {
                         System.out.println("found path");
                         robot.sense(realRun);
                         calibrationCounter = moveAndSense(grid, robot, realRun, calibrationCounter);
@@ -137,6 +140,7 @@ public class ImageExpAlgorithmRunner implements AlgorithmRunner {
                     }
                     while (exploreChecker.getIsExplored(robot.getPosX(), robot.getPosY()) != grid
                             .getIsExplored(robot.getPosX(), robot.getPosY())) {
+                        robot.sense(realRun);
                         calibrationCounter = moveAndSense(grid, robot, realRun, calibrationCounter);
                         takePhoto(robot, grid, realRun);
                     }

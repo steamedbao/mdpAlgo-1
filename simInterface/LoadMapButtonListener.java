@@ -37,7 +37,7 @@ public class LoadMapButtonListener implements ActionListener {
 					JOptionPane.QUESTION_MESSAGE);
 			if (null != file_path) {
 				try {
-					curGrid.loadFromDisk("D:/3004/mdpAlgo/maps/" + file_path);
+					curGrid.loadFromDisk("D:/3004/mdpAlgo/" + file_path);
 					System.out.println("Loaded map" + file_path);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

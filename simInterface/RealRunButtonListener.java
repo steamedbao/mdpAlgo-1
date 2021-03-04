@@ -49,15 +49,8 @@ public class RealRunButtonListener implements ActionListener {
 
         @Override
         protected Integer doInBackground() throws Exception {
-            // receive way point
 
-            String msg = SocketMgr.getInstance().receiveMessage(false);
             // if (SocketMgr.getInstance().receiveMessage())
-
-            List<Integer> waypoints = null;
-            while (waypoints == null && (waypoints = CommMgr.parseMessage(msg)) == null) {
-                msg = SocketMgr.getInstance().receiveMessage(false);
-            }
 
             // Clear sensorReading
             FileWriter f = new FileWriter("sensorReading.txt", false);
@@ -69,7 +62,18 @@ public class RealRunButtonListener implements ActionListener {
             AlgorithmRunner explorationRunner = new ExplorationAlgorithmRunner(mView.getRobotSpeed());
             explorationRunner.run(mGrid, mRobot, mView.getIsRealRun());
 
+            System.out.println("Waiting for waypoints");
+            // receive way point
+
+            String msg = SocketMgr.getInstance().receiveMessage(false);
+
+            List<Integer> waypoints = null;
+            while (waypoints == null && (waypoints = CommMgr.parseMessage(msg)) == null) {
+                msg = SocketMgr.getInstance().receiveMessage(false);
+            }
+
             String msg1 = SocketMgr.getInstance().receiveMessage(false);
+
             if (msg1.equals("startfp")) {
                 System.out.println("Starting0");
                 AlgorithmRunner fastestPathRunner = new FastestPathAlgorithmRunner(mView.getRobotSpeed(),

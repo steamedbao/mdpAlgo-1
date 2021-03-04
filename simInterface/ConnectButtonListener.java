@@ -7,6 +7,8 @@ import javax.swing.*;
 
 import connection.SocketMgr;
 
+import static constant.EntitiesConstants.*;
+
 public class ConnectButtonListener implements ActionListener {
 
 	private Simulator sim;
@@ -28,7 +30,7 @@ public class ConnectButtonListener implements ActionListener {
 		protected Integer doInBackground() throws Exception {
 			SocketMgr connection = new SocketMgr();
 			connection.openConnection();
-			connection.sendMessage("P", "AN,HiRpi");
+			connection.sendMessage(TARGET_RPI, "Hi Rpi");
 			connection.receiveMessage(true);
 			return 1;
 		}

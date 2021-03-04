@@ -54,10 +54,12 @@ public interface AlgorithmRunner {
         cells[startX][startY].setDistance(fScore[startX][startY]);
         openSet.add(cells[startX][startY]);
 
-        // run algorithm
+        // run algorithm here got problem
         while (!openSet.isEmpty()) {
             GridBox current = getCurrent(openSet, fScore);
+            System.out.println(startX + " " + startY + " " + endX + " " + endY);
             if (current.getX() == endX && current.getY() == endY) {
+                System.out.println("Gotten here");
                 return reconstructPath(robot, current, cameFrom);
             }
 
@@ -76,6 +78,10 @@ public interface AlgorithmRunner {
                 if (previousCell != null && previousCell.getX() != neighbor.getX()
                         && previousCell.getY() != neighbor.getY())
                     tentativeGScore += 1; // penalize turns
+
+                System.out.println("temp g score " + tentativeGScore);
+                System.out.println("g score " + gScore[neighbor.getX()][neighbor.getY()]);
+
                 if (tentativeGScore >= gScore[neighbor.getX()][neighbor.getY()])
                     continue;
 
@@ -83,6 +89,8 @@ public interface AlgorithmRunner {
                 gScore[neighbor.getX()][neighbor.getY()] = tentativeGScore;
                 fScore[neighbor.getX()][neighbor.getY()] = tentativeGScore
                         + estimateDistanceToGoal(neighbor.getX(), neighbor.getY(), endX, endY);
+                System.out.println("g score and fscore of neighbour " + tentativeGScore + " "
+                        + fScore[neighbor.getX()][neighbor.getY()]);
             }
         }
         return null;
@@ -169,7 +177,6 @@ public interface AlgorithmRunner {
             actions.add("M");
             robot.move();
         }
-
         return actions;
     }
 
@@ -236,6 +243,7 @@ public interface AlgorithmRunner {
         if (curX != goalX && curY != goalY) // we must turn at least once
             distance += 1;
 
+        System.out.println("dist " + distance);
         return distance;
     }
 
