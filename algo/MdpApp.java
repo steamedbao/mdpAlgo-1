@@ -24,7 +24,7 @@ public class MdpApp {
 
 		GridMap grid = new GridMap();
 		// setObstaclesMap(grid);
-		Sensor sensor4 = new Sensor(6, 2, 0, RIGHT, 2);
+		Sensor sensor4 = new Sensor(4, 2, 0, RIGHT, 2);
 		Sensor sensor5 = new Sensor(2, 0, 0, LEFT, 5);
 		Sensor sensor3 = new Sensor(2, 2, 0, MIDDLE, 8);
 		Sensor sensor1 = new Sensor(2, 0, 0, MIDDLE, 8);
@@ -52,7 +52,7 @@ public class MdpApp {
 		new RealRunButtonListener(simulator, robot, grid);
 		new RealRunCheckBoxListener(simulator);
 
-		String testStr = "0700000000000001C00002000400080010202040408001000200040000380000000020004200";
+		String testStr = "0000000000000400080010C000F0000000000000007E00FC0000000180000100020004000800";
 
 		BigInteger testInt = new BigInteger(testStr, 16);
 		String testBin = testInt.toString(2);

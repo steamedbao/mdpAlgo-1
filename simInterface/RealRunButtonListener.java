@@ -74,13 +74,14 @@ public class RealRunButtonListener implements ActionListener {
 
             String msg1 = SocketMgr.getInstance().receiveMessage(false);
 
-            if (msg1.equals("startfp")) {
+            while (msg1.equals("startfp")) {
                 System.out.println("Starting0");
                 AlgorithmRunner fastestPathRunner = new FastestPathAlgorithmRunner(mView.getRobotSpeed(),
                         waypoints.get(0) - 1, waypoints.get(1) - 1);
                 // 0, 17);
 
                 fastestPathRunner.run(mGrid, mRobot, mView.getIsRealRun());
+                msg1 = SocketMgr.getInstance().receiveMessage(false);
             }
 
             return 1;

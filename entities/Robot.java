@@ -357,6 +357,7 @@ public class Robot {
         int distance = Math.min(returnedDistance, range);
         boolean obstacleAhead = returnedDistance <= range;
 
+        System.out.println("updating map");
         for (int i = 1; i <= distance; i++) {
             if (heading == NORTH) {
                 yToUpdate = yToUpdate - 1;
@@ -386,14 +387,16 @@ public class Robot {
     }
 
     public void sense(boolean realRun) {
-        if (realRun) { // change
+        if (!realRun) { // change
             // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
             String sensorData = SocketMgr.getInstance().receiveMessage(true);
             // while sensor never reply, send message again
             while (sensorData == null) {
                 // SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
                 sensorData = SocketMgr.getInstance().receiveMessage(true);
+                System.out.println(sensorData);
             }
+
             try {
                 FileWriter f = new FileWriter("sensorReading.txt", true);
                 f.write(sensorData + "\n");
@@ -402,13 +405,26 @@ public class Robot {
                 e.printStackTrace();
             }
             //
-            String[] sensorReadings = sensorData.split(",", allSensors.size());
+            String[] sensorReadings = sensorData.split(" ", allSensors.size());
+            System.out.println("sensor readings here " + sensorReadings.toString());
+            System.out.println("all sensors array size " + allSensors.size());
+
             for (int i = 0; i < allSensors.size(); i++) {
                 int returnedDistance = Integer.parseInt(sensorReadings[i]);
+                System.out.println("returned dist=" + returnedDistance);
+
                 int heading = allSensors.get(i).getActualOrientation();
+                System.out.println("Heading=" + heading);
+
                 int range = allSensors.get(i).getRange();
+                System.out.println("Range=" + range);
+
                 int x = allSensors.get(i).getActualPosX();
+                System.out.println("x=" + x);
+
                 int y = allSensors.get(i).getActualPosY();
+                System.out.println("y=" + y);
+
                 if (i == 5 && returnedDistance == 8) {
                     updateMap(-1, heading, range, x, y, true, allSensors.get(i).getReliability());
                 } else if (i == 5 && returnedDistance == 5) {
